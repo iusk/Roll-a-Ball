@@ -11,12 +11,18 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody rb;
     private int count;
+    private AudioSource pickup;
+    private AudioSource winner;
+    private AudioSource source;
 
     void Start() {
         rb = GetComponent<Rigidbody>();
         count = 0;
         SetCountText();
         winText.text = "";
+        AudioSource[] source = GetComponents<AudioSource>();
+        pickup = source[0];
+        winner = source[1];
     }
 
     void FixedUpdate() {
@@ -33,12 +39,14 @@ public class PlayerController : MonoBehaviour
             other.gameObject.SetActive(false);
             count++;
             SetCountText();
+            pickup.Play();
         }
     }
 
     void SetCountText() {
         countText.text = "Count: " + count.ToString();
-        if (count >= 11) {
+        if (count >= 10) {
+            winner.Play();
             winText.text = "Hey, that's pretty good!";
         }
     }
